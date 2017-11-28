@@ -1,0 +1,35 @@
+.warp{height: 100%;width: 100%;background: url(../img/bgd.png)no-repeat;background-size:cover;font-size: 12px;min-height: 620px;}
+.login-area{width: 480px;height: 100%;margin:0 auto;position: relative;}
+.bottom-logo{width: 124px;height: 60px;position: absolute;bottom:30px;left: 50%;margin-left: -62px;line-height: 60px;text-align: center;background: url(../img/bottom_logo.png)no-repeat;color:#ffffff;}
+.login-box{width: 100%;position: absolute;left:0;top:50%;margin-top:-238px}
+.login-logo{width: 100%;max-width: 100%;display: block;}
+.login-main{height: 340px;background: url(../img/login_box.png)no-repeat;padding: 0 60px;}
+.login-main-text{height: 70px;line-height: 70px;color:#d9d9d9;}
+.auth-main-text{height: 70px;line-height: 70px;color:#000000;font-weight: bold;font-size: 14px;}
+.form{padding: 20px 0;position: relative;}
+.wrong{position: absolute;color:red;left:40px;bottom:10px;}
+.form-item{height:44px;margin:20px 0;position:relative}
+.form-item-text{font-size:12px;font-weight: bold;height: 42px;line-height: 42px;width: 40px;float: left; }
+.form-item input{float: left;height: 42px;line-height: 42px;padding: 0 5px;border:1px solid #a6a6a6;border-radius: 3px;width: 290px;background: #ffffff}
+.login-btns{padding: 0 28px;}
+.form-item input:focus{border:1px solid #1b67f0}
+.login-btns .radio{overflow: hidden;float: left;margin-top: 10px;margin-left: 10px;}
+.login-btns .radio span{border:1px solid #7e7e7e;border-radius: 4px;height: 18px;width: 18px;margin-right: 5px;float: left;}
+.login-btns .radio span.checked{background: #eeeeee}
+.login-btns .radio p{float: left;line-height: 20px;color:#777777;}
+.login-btn{float: right;width: 120px;height: 38px;border-radius: 3px;line-height: 38px;cursor: pointer;text-align: center;color:#ffffff;background: #1494df}
+.describe{padding: 30px 100px;}
+.describe-item{overflow: hidden;font-size: 14px;margin:15px 0;}
+.describe-item span{display: block;float: left;height: 6px;width: 6px;background: #000000;border-radius:15px;margin-right: 20px;margin-top:8px;}
+.describe-item p{line-height: 20px;}
+.auth-btns{overflow: hidden;width: 255px;margin:0 auto;}
+.auth-btn{float: left;width: 118px;height: 36px;line-height: 36px;border-radius: 3px;text-align: center;cursor: pointer;}
+.auth-btn.sure{background: #1696e1;font-weight: bold;color:#ffffff;border:1px solid #1696e1;margin-right: 15px;}
+.auth-btn.cancel{background: #ffffff;border:1px solid #1696e1;color:#0064fe;}
+.record{width: 300px;position: absolute;left: 40px;top:44px;background: #ffffff;border-radius: 2px;border:1px solid #a6a6a6;height: 120px;overflow: auto;z-index: 20}
+.record li{padding: 13px 5px;}
+.record li.select,.record li:hover{background: #e7e7e7;}
+.record::-webkit-scrollbar{width:6px;margin-right:2px;height: 6px}
+.record::-webkit-scrollbar-track{border-radius:10px}
+.record::-webkit-scrollbar-track-piece{background-color:#f0f0f0;border-radius:10px}
+.record::-webkit-scrollbar-thumb{width:6px;border-radius:5px;background:#c8c9cb;}
