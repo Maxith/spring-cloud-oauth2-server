@@ -18,7 +18,7 @@ public interface ISystemUserService {
      * @param username
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST,value = "/system/api/login/selectSystemUserByUsername",consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST,value = "${systemUserService.selectSystemUserByUsername}",consumes = "application/json")
     SystemUser selectSystemUserByUsername(@RequestParam(value = "username")String username);
 
     /**
@@ -27,13 +27,13 @@ public interface ISystemUserService {
      * @param password
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST,value = "/system/api/login/selectUserByUsernameAndPassword",consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST,value = "${systemUserService.selectUserByUsernameAndPassword}",consumes = "application/json")
     SystemUser selectUserByUsernameAndPassword(@RequestParam(value = "username")String username,@RequestParam(value = "password") String password);
 
     /**
      * 更新用户登录时间
      * @param gid
      */
-    @RequestMapping(method = RequestMethod.POST,value = "/system/api/login/updateLoginTime",consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST,value = "${systemUserService.updateLoginTime}",consumes = "application/json")
     void updateLoginTime(@RequestParam(value = "gid")String gid);
 }
