@@ -13,14 +13,18 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * shiro redis 缓存
- * Created by zhouyou on 2017/10/11.
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:56
+ **/
 @Component
 public class ShiroRedisCacheManager extends BaseComponent implements CacheManager {
 
     private static final String REDIS_SHIRO_CACHE = "shiro-redis-cache:";
 
-    // fast lookup by name map
+    /**
+     * fast lookup by name map
+     */
     private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap<>();
 
     @Resource

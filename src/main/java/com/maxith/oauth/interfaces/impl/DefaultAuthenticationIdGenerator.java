@@ -11,14 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * AuthenticationId 的生成器
- * MD5加密
- */
+ * 默认认证id生成器
+ * 使用md5加密
+ *
+ * @author zhouyou
+ * @date 2018/7/19 15:54
+ **/
 @Service
 public class DefaultAuthenticationIdGenerator implements AuthenticationIdGenerator {
 
+    @Override
     public String generate(String clientId, String username, String scope) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(3);
         map.put(OAuth.OAUTH_CLIENT_ID, clientId);
         //check it is client only
         if (!clientId.equals(username)) {

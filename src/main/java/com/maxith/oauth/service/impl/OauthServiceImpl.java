@@ -22,8 +22,11 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * Created by zhouyou on 2017/7/5.
- */
+ * 认证服务service接口 实现类
+ *
+ * @author zhouyou
+ * @date 2018/7/19 16:01
+ **/
 @Service
 public class OauthServiceImpl extends BaseComponent implements IOauthService {
 
@@ -104,7 +107,7 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         return accessToken;
     }
 
-    //Always return new AccessToken, exclude refreshToken
+
     @Override
     public AccessToken retrieveNewAccessToken(String username, OauthClient clientDetails, Set<String> scopes) throws OAuthSystemException {
         String scope = OAuthUtils.encodeScopes(scopes);
@@ -136,7 +139,7 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         return rows > 0;
     }
 
-    //Always return new AccessToken
+
     @Override
     public AccessToken retrieveAuthorizationCodeAccessToken(OauthClient clientDetails, String code) throws OAuthSystemException {
         final OauthCode oauthCode = loadOauthCode(code, clientDetails);
@@ -156,7 +159,6 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         return accessToken;
     }
 
-    //grant_type=password AccessToken
     @Override
     public AccessToken retrievePasswordAccessToken(OauthClient clientDetails, Set<String> scopes, String username) throws OAuthSystemException {
         String scope = OAuthUtils.encodeScopes(scopes);
@@ -186,8 +188,6 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
 
     }
 
-
-    //grant_type=client_credentials
     @Override
     public AccessToken retrieveClientCredentialsAccessToken(OauthClient clientDetails, Set<String> scopes) throws OAuthSystemException {
         String scope = OAuthUtils.encodeScopes(scopes);
@@ -225,12 +225,6 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         return accessTokenMapper.findAccessTokenByRefreshToken(refreshToken, clientId);
     }
 
-    /*
-    * Get AccessToken
-    * Generate a new AccessToken from existed(exclude token,refresh_token)
-    * Update access_token,refresh_token, expired.
-    * Save and remove old
-    * */
     @Override
     public AccessToken changeAccessTokenByRefreshToken(String refreshToken, String clientId) throws OAuthSystemException {
         final AccessToken oldToken = loadAccessTokenByRefreshToken(refreshToken, clientId);
@@ -247,7 +241,7 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         newAccessToken.setTokenId(oAuthIssuer.accessToken());
         newAccessToken.setRefreshToken(oAuthIssuer.refreshToken());
         newAccessToken.setCreateTime(now);
-        newAccessToken.setCreateTime(now);
+        newAccessToken.setUpdateTime(now);
 
         accessTokenMapper.deleteByPrimaryKey(oldToken.getId());
         logger.debug("Delete old AccessToken: {}", oldToken);
@@ -264,6 +258,15 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         return clientDetails != null;
     }
 
+    /**
+     * 创建一个新的令牌并保存
+     * @param clientDetails
+     * @param includeRefreshToken
+     * @param username
+     * @param authenticationId
+     * @return
+     * @throws OAuthSystemException
+     */
     private AccessToken createAndSaveAccessToken(OauthClient clientDetails, boolean includeRefreshToken, String username, String authenticationId) throws OAuthSystemException {
         Date now = new Date();
 
@@ -274,23 +277,30 @@ public class OauthServiceImpl extends BaseComponent implements IOauthService {
         accessToken.setAuthenticationId(authenticationId);
         accessToken.updateByClientDetails(clientDetails);
         accessToken.setCreateTime(now);
-        accessToken.setCreateTime(now);
+        accessToken.setUpdateTime(now);
 
         if (includeRefreshToken) {
             accessToken.setRefreshToken(oAuthIssuer.refreshToken());
         }
 
-        this.accessTokenMapper.insert(accessToken);
+        accessTokenMapper.insert(accessToken);
+
         logger.debug("Save AccessToken: {}", accessToken);
         return accessToken;
     }
 
+    /**
+     * 创建一个新的口令
+     * @param username
+     * @param clientDetails
+     * @return
+     * @throws OAuthSystemException
+     */
     private OauthCode createOauthCode(String username, OauthClient clientDetails) throws OAuthSystemException {
-        OauthCode oauthCode;
         final String authCode = oAuthIssuer.authorizationCode();
+        OauthCode oauthCode = this.saveAuthorizationCode(username, authCode, clientDetails);
 
         logger.debug("Save authorizationCode '{}' of OauthClient '{}'", authCode, clientDetails);
-        oauthCode = this.saveAuthorizationCode(username, authCode, clientDetails);
         return oauthCode;
     }
 }

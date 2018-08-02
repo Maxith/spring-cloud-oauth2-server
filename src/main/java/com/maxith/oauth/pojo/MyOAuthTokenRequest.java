@@ -7,9 +7,10 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 自定义 token 响应对象
- * Created by zhouyou on 2017/7/4.
- */
+ *  自定义 token 响应对象
+ *  @author zhouyou
+ *  @date 2018/7/18 10:03
+ **/
 public class MyOAuthTokenRequest extends OAuthTokenRequest {
 
     /**

@@ -8,7 +8,10 @@ import java.util.Date;
 
 /**
  * 应用详情
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 16:18
+ **/
 public class OauthClient extends BasicClientInfo implements Serializable {
 
     /**
@@ -131,6 +134,11 @@ public class OauthClient extends BasicClientInfo implements Serializable {
         this.remark = remark;
     }
 
+    /**
+     * 是否支持刷新令牌
+     *
+     * @return
+     */
     public boolean supportRefreshToken() {
         return this.grantTypes != null && this.grantTypes.contains(GrantType.REFRESH_TOKEN.toString());
     }

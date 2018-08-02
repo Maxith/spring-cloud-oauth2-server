@@ -1,31 +1,40 @@
-package com.maxith.oauth.entity;
+package com.maxith.config.oauth;
 
 import org.apache.shiro.authc.RememberMeAuthenticationToken;
 
 /**
- * 2015/9/29
- *
- */
-public class OAuth2Token implements RememberMeAuthenticationToken {
-
+ *  shiro框架的令牌
+ *  @author zhouyou
+ *  @date 2018/7/18 16:27
+ **/
+public class OAuthShiroToken implements RememberMeAuthenticationToken {
 
     private static final long serialVersionUID = 8587854556973099598L;
 
-
-    // the service access_token
+    /**
+     * 认证令牌
+     */
     private String accessToken;
 
-    // the user identifier, username
+    /**
+     * 用户id
+     * <br/>
+     * 即用户名
+     */
     private String userId;
 
-    // is the user in a remember me mode ?
-    private boolean rememberMe = false;
-
-
+    /**
+     * 资源id
+     */
     private String resourceId;
 
+    /**
+     * 开启"记住我" 模式
+     * 默认关闭
+     */
+    private boolean rememberMe = false;
 
-    public OAuth2Token(String accessToken, String resourceId) {
+    public OAuthShiroToken(String accessToken, String resourceId) {
         this.accessToken = accessToken;
         this.resourceId = resourceId;
     }
@@ -39,12 +48,12 @@ public class OAuth2Token implements RememberMeAuthenticationToken {
         return rememberMe;
     }
 
-    public OAuth2Token setUserId(String userId) {
+    public OAuthShiroToken setUserId(String userId) {
         this.userId = userId;
         return this;
     }
 
-    public OAuth2Token setRememberMe(boolean rememberMe) {
+    public OAuthShiroToken setRememberMe(boolean rememberMe) {
         this.rememberMe = rememberMe;
         return this;
     }

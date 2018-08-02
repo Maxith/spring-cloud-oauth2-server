@@ -11,16 +11,19 @@ import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
  * shiro 认证器
  *
  * @author zhouyou
- */
+ * @date 2018/7/18 10:52
+ **/
 public class OAuth2CredentialsMatcher extends SimpleCredentialsMatcher {
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
+
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
+
         //加密传入的密码
         Object tokenCredentials = CryptUtils.generateDigestWithMD5(String.valueOf(usernamePasswordToken.getPassword()));
 
         Object accountCredentials = this.getCredentials(info);
 
-        return this.equals(tokenCredentials,accountCredentials);
+        return this.equals(tokenCredentials, accountCredentials);
     }
 }

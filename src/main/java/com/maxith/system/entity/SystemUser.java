@@ -5,8 +5,11 @@ import java.util.Date;
 
 /**
  * 系统用户
- */
-public class SystemUser implements Serializable{
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:44
+ **/
+public class SystemUser implements Serializable {
 
     private static final long serialVersionUID = -3816102757269650779L;
     /**

@@ -7,14 +7,17 @@ import java.io.*;
 
 /**
  * 序列化工具
- * Created by zhouyou on 2017/10/17.
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:16
+ **/
 public class SerializeUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(SerializeUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SerializeUtils.class);
 
     /**
      * 反序列化
+     *
      * @param bytes
      * @return
      */
@@ -32,16 +35,14 @@ public class SerializeUtils {
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteStream);
                 try {
                     result = objectInputStream.readObject();
-                }
-                catch (ClassNotFoundException ex) {
+                } catch (ClassNotFoundException ex) {
                     throw new Exception("Failed to deserialize object type", ex);
                 }
-            }
-            catch (Throwable ex) {
+            } catch (Throwable ex) {
                 throw new Exception("Failed to deserialize", ex);
             }
         } catch (Exception e) {
-            logger.error("Failed to deserialize",e);
+            LOGGER.error("Failed to deserialize", e);
         }
         return result;
     }
@@ -52,6 +53,7 @@ public class SerializeUtils {
 
     /**
      * 序列化
+     *
      * @param object
      * @return
      */
@@ -64,8 +66,7 @@ public class SerializeUtils {
             ObjectOutputStream oos = new ObjectOutputStream(baos);
             oos.writeObject(object);
             oos.flush();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new IllegalArgumentException("Failed to serialize object of type: " + object.getClass(), ex);
         }
         return baos.toByteArray();

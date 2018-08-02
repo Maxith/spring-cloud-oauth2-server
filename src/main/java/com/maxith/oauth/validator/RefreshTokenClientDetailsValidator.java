@@ -2,8 +2,9 @@ package com.maxith.oauth.validator;
 
 
 import com.maxith.oauth.entity.AccessToken;
-import com.maxith.oauth.pojo.MyOAuthTokenRequest;
 import com.maxith.oauth.entity.OauthClient;
+import com.maxith.oauth.pojo.MyOAuthTokenRequest;
+import com.maxith.oauth.service.IOauthService;
 import org.apache.oltu.oauth2.common.error.OAuthError;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
@@ -11,31 +12,35 @@ import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 刷新令牌 与 客户端 匹配验证器
- */
+ * 令牌刷新模式验证器
+ *
+ * @author zhouyou
+ * @date 2018/7/20 10:46
+ **/
 public class RefreshTokenClientDetailsValidator extends AbstractOauthTokenValidator {
 
-    public RefreshTokenClientDetailsValidator(MyOAuthTokenRequest oauthRequest) {
-        super(oauthRequest);
+    public RefreshTokenClientDetailsValidator(MyOAuthTokenRequest tokenRequest, IOauthService iOauthService) {
+        super(tokenRequest, iOauthService);
     }
 
-    /*
-    * /oauth/token?client_id=mobile-client&client_secret=mobile&grant_type=refresh_token&refresh_token=b36f4978-a172-4aa8-af89-60f58abe3ba1
-    * */
+    /**
+     * /oauth/token?client_id=mobile-client&client_secret=mobile&grant_type=refresh_token&refresh_token=b36f4978-a172-4aa8-af89-60f58abe3ba1
+     *
+     * @param clientDetails
+     * @return
+     * @throws OAuthSystemException
+     */
     @Override
     protected OAuthResponse validateSelf(OauthClient clientDetails) throws OAuthSystemException {
 
         //validate grant_type
         final String grantType = grantType();
-        if (!clientDetails.getGrantTypes().contains(grantType)) {
-            logger.debug("Invalid grant_type '{}', client_id = '{}'", grantType, clientDetails.getClientId());
+        if (invalidateGrantType(clientDetails, grantType)) {
             return invalidGrantTypeResponse(grantType);
         }
 
         //validate client_secret
-        final String clientSecret = oauthRequest.getClientSecret();
-        if (clientSecret == null || !clientSecret.equals(clientDetails.getClientSecret())) {
-            logger.debug("Invalid client_secret '{}', client_id = '{}'", clientSecret, clientDetails.getClientId());
+        if (invalidateClientSecret(clientDetails)) {
             return invalidClientSecretResponse();
         }
 
@@ -56,6 +61,4 @@ public class RefreshTokenClientDetailsValidator extends AbstractOauthTokenValida
                 .setErrorDescription("Invalid refresh_token: " + refreshToken)
                 .buildJSONMessage();
     }
-
-
 }

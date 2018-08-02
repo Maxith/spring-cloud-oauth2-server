@@ -1,9 +1,14 @@
 package com.maxith.oauth.mapper;
 
-
 import com.maxith.oauth.entity.OauthCode;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * 认证code mybatis mapper
+ *
+ * @author zhouyou
+ * @date 2018/7/19 16:00
+ **/
 public interface OauthCodeMapper {
     int deleteByPrimaryKey(Integer id);
 

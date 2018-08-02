@@ -4,7 +4,14 @@ package com.maxith.oauth.mapper;
 import com.maxith.oauth.entity.AccessToken;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * 认证令牌mybatis mapper
+ *
+ * @author zhouyou
+ * @date 2018/7/19 15:56
+ **/
 public interface AccessTokenMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(AccessToken record);

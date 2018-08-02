@@ -15,8 +15,10 @@ import java.lang.reflect.Field;
 
 /**
  * shiro redis session缓存
- * Created by zhouyou on 2017/10/17.
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:57
+ **/
 @Component
 public class ShiroRedisSessionDAO extends CachingSessionDAO {
 
@@ -34,7 +36,7 @@ public class ShiroRedisSessionDAO extends CachingSessionDAO {
 
     @Override
     protected void doDelete(Session session) {
-        if(session == null || session.getId() == null){
+        if (session == null || session.getId() == null) {
             logger.error("session or session id is null");
             return;
         }
@@ -51,21 +53,22 @@ public class ShiroRedisSessionDAO extends CachingSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        if(sessionId == null){
+        if (sessionId == null) {
             logger.error("session id is null");
             return null;
         }
-        Session s = (Session)SerializeUtils.deserialize(redisTemplate.opsForValue().get(SHIRO_REDIS_SESSION + sessionId));
+        Session s = (Session) SerializeUtils.deserialize(redisTemplate.opsForValue().get(SHIRO_REDIS_SESSION + sessionId));
         return s;
     }
 
     /**
      * save session
+     *
      * @param session
      * @throws UnknownSessionException
      */
     private void saveSession(Session session) throws UnknownSessionException {
-        if(session == null || session.getId() == null){
+        if (session == null || session.getId() == null) {
             logger.error("session or session id is null");
             return;
         }

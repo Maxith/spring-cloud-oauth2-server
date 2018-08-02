@@ -1,18 +1,18 @@
 package com.maxith;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import javax.sql.DataSource;
-
+/**
+ * 单点登录微服务
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:45
+ **/
 @ServletComponentScan
 @EnableFeignClients
 @EnableDiscoveryClient
@@ -20,13 +20,12 @@ import javax.sql.DataSource;
 @EnableAspectJAutoProxy
 public class Oauth2Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Oauth2Application.class, args);
-	}
-
-    @Bean(name = "dataSource")
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource myDataSource() {
-        return new DruidDataSource();
+    /**
+     * 服务入口
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(Oauth2Application.class, args);
     }
 }

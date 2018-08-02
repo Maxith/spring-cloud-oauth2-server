@@ -1,12 +1,24 @@
 package com.maxith.oauth.entity;
 
+/**
+ *  密码模式
+ *  @author zhouyou
+ *  @date 2018/7/18 16:34
+ **/
 public class OauthCode {
+
     private Integer id;
-
+    /**
+     * 密码
+     */
     private String code;
-
+    /**
+     * 用户名
+     */
     private String username;
-
+    /**
+     * 客户端id
+     */
     private String clientId;
 
     public Integer getId() {

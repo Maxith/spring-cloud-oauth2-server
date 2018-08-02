@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 认证令牌
- */
-public class AccessToken implements Serializable{
+ * 认证令牌 对象
+ *
+ * @author zhouyou
+ * @date 2018/7/18 16:02
+ **/
+public class AccessToken implements Serializable {
 
     public static final String BEARER_TYPE = "Bearer";
 
@@ -21,7 +24,7 @@ public class AccessToken implements Serializable{
     public final static long ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60 * 12;
 
 
-    protected static long THOUSAND = 1000L;
+    protected static long ONE_THOUSAND = 1000L;
 
     /**
      * 主键id
@@ -59,11 +62,17 @@ public class AccessToken implements Serializable{
      * 刷新令牌过期时间
      */
     private Long refreshTokenExpiredSeconds = REFRESH_TOKEN_VALIDITY_SECONDS;
-
+    /**
+     * 创建时间
+     */
     private Date createTime;
-
+    /**
+     * 修改时间
+     */
     private Date updateTime;
-
+    /**
+     * 备注
+     */
     private String remark;
 
     public Integer getId() {
@@ -162,26 +171,45 @@ public class AccessToken implements Serializable{
         this.remark = remark == null ? null : remark.trim();
     }
 
+    /**
+     * 令牌是否过期
+     *
+     * @return
+     */
     public boolean tokenExpired() {
-        final long time = createTime.getTime() + (this.tokenExpiredSeconds * THOUSAND);
-        return time < new Date().getTime();
+        final long time = createTime.getTime() + (this.tokenExpiredSeconds * ONE_THOUSAND);
+        return time < System.currentTimeMillis();
     }
 
-
+    /**
+     * 刷新令牌是否过期
+     *
+     * @return
+     */
     public boolean refreshTokenExpired() {
-        final long time = createTime.getTime() + (this.refreshTokenExpiredSeconds * THOUSAND);
-        return time < new Date().getTime();
+        final long time = createTime.getTime() + (this.refreshTokenExpiredSeconds * ONE_THOUSAND);
+        return time < System.currentTimeMillis();
     }
 
-
+    /**
+     * 获取令牌过期时间
+     *
+     * @return
+     */
     public long currentTokenExpiredSeconds() {
         if (tokenExpired()) {
             return -1;
         }
-        final long time = createTime.getTime() + (this.tokenExpiredSeconds * THOUSAND);
-        return (time - new Date().getTime()) / THOUSAND;
+        final long time = createTime.getTime() + (this.tokenExpiredSeconds * ONE_THOUSAND);
+        return (time - System.currentTimeMillis()) / ONE_THOUSAND;
     }
 
+    /**
+     * 更新令牌时间
+     *
+     * @param clientDetails
+     * @return
+     */
     public AccessToken updateByClientDetails(OauthClient clientDetails) {
         this.clientId = clientDetails.getClientId();
 

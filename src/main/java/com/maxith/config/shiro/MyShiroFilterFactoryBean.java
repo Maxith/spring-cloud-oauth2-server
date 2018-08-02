@@ -14,8 +14,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by zhouyou on 2017/6/8.
- */
+ *  自定义shiro拦截器工厂对象
+ *  @author zhouyou
+ *  @date 2018/7/18 10:58
+ **/
 public class MyShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 
     @Override
@@ -24,7 +26,7 @@ public class MyShiroFilterFactoryBean extends ShiroFilterFactoryBean {
     }
 
     @Override
-    protected AbstractShiroFilter createInstance() throws Exception {
+    protected AbstractShiroFilter createInstance(){
 
         SecurityManager securityManager = getSecurityManager();
         if (securityManager == null) {

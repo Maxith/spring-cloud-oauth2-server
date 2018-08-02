@@ -2,26 +2,24 @@ package com.maxith.config.redis.shiro;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.Feature;
+import com.maxith.common.entity.BaseComponent;
 import com.maxith.common.tools.SerializeUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.*;
 
 /**
  * shiro 缓存
- * Created by zhouyou on 2017/10/11.
- */
-public class ShiroCache<K, V> implements Cache<K, V> {
-
-    private static Logger logger = LoggerFactory.getLogger(ShiroCache.class);
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:55
+ **/
+public class ShiroCache<K, V> extends BaseComponent implements Cache<K, V> {
 
     private String cacheKey;
     private RedisTemplate<String, byte[]> redisTemplate;
@@ -40,7 +38,7 @@ public class ShiroCache<K, V> implements Cache<K, V> {
                 return null;
             } else {
                 byte[] rawValue = redisTemplate.opsForValue().get(cacheKey + key);
-                JSON.parseObject("",new TypeReference<V>(){});
+                JSON.parseObject("", new TypeReference<V>() {});
                 V value = (V) SerializeUtils.deserialize(rawValue);
                 return value;
             }

@@ -1,165 +1,165 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.maxith.oauth.mapper.AccessTokenMapper" >
-  <resultMap id="BaseResultMap" type="com.maxith.oauth.entity.AccessToken" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="token_id" property="tokenId" jdbcType="VARCHAR" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
-    <result column="authentication_id" property="authenticationId" jdbcType="VARCHAR" />
-    <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR" />
-    <result column="token_type" property="tokenType" jdbcType="VARCHAR" />
-    <result column="token_expired_seconds" property="tokenExpiredSeconds" jdbcType="BIGINT" />
-    <result column="refresh_token_expired_seconds" property="refreshTokenExpiredSeconds" jdbcType="BIGINT" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.maxith.oauth.mapper.AccessTokenMapper">
+    <resultMap id="BaseResultMap" type="com.maxith.oauth.entity.AccessToken">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="token_id" property="tokenId" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="client_id" property="clientId" jdbcType="VARCHAR"/>
+        <result column="authentication_id" property="authenticationId" jdbcType="VARCHAR"/>
+        <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR"/>
+        <result column="token_type" property="tokenType" jdbcType="VARCHAR"/>
+        <result column="token_expired_seconds" property="tokenExpiredSeconds" jdbcType="BIGINT"/>
+        <result column="refresh_token_expired_seconds" property="refreshTokenExpiredSeconds" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, token_id, username, client_id, authentication_id, refresh_token, token_type, 
     token_expired_seconds, refresh_token_expired_seconds, create_time, update_time, remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from access_token
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from access_token
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from access_token
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.maxith.oauth.entity.AccessToken" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into access_token (token_id, username, client_id, 
-      authentication_id, refresh_token, token_type, 
-      token_expired_seconds, refresh_token_expired_seconds, 
-      create_time, update_time, remark
-      )
-    values (#{tokenId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, 
-      #{authenticationId,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, #{tokenType,jdbcType=VARCHAR}, 
-      #{tokenExpiredSeconds,jdbcType=BIGINT}, #{refreshTokenExpiredSeconds,jdbcType=BIGINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.maxith.oauth.entity.AccessToken" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into access_token
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="tokenId != null" >
-        token_id,
-      </if>
-      <if test="username != null" >
-        username,
-      </if>
-      <if test="clientId != null" >
-        client_id,
-      </if>
-      <if test="authenticationId != null" >
-        authentication_id,
-      </if>
-      <if test="refreshToken != null" >
-        refresh_token,
-      </if>
-      <if test="tokenType != null" >
-        token_type,
-      </if>
-      <if test="tokenExpiredSeconds != null" >
-        token_expired_seconds,
-      </if>
-      <if test="refreshTokenExpiredSeconds != null" >
-        refresh_token_expired_seconds,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="tokenId != null" >
-        #{tokenId,jdbcType=VARCHAR},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="clientId != null" >
-        #{clientId,jdbcType=VARCHAR},
-      </if>
-      <if test="authenticationId != null" >
-        #{authenticationId,jdbcType=VARCHAR},
-      </if>
-      <if test="refreshToken != null" >
-        #{refreshToken,jdbcType=VARCHAR},
-      </if>
-      <if test="tokenType != null" >
-        #{tokenType,jdbcType=VARCHAR},
-      </if>
-      <if test="tokenExpiredSeconds != null" >
-        #{tokenExpiredSeconds,jdbcType=BIGINT},
-      </if>
-      <if test="refreshTokenExpiredSeconds != null" >
-        #{refreshTokenExpiredSeconds,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.maxith.oauth.entity.AccessToken" >
-    update access_token
-    <set >
-      <if test="tokenId != null" >
-        token_id = #{tokenId,jdbcType=VARCHAR},
-      </if>
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="clientId != null" >
-        client_id = #{clientId,jdbcType=VARCHAR},
-      </if>
-      <if test="authenticationId != null" >
-        authentication_id = #{authenticationId,jdbcType=VARCHAR},
-      </if>
-      <if test="refreshToken != null" >
-        refresh_token = #{refreshToken,jdbcType=VARCHAR},
-      </if>
-      <if test="tokenType != null" >
-        token_type = #{tokenType,jdbcType=VARCHAR},
-      </if>
-      <if test="tokenExpiredSeconds != null" >
-        token_expired_seconds = #{tokenExpiredSeconds,jdbcType=BIGINT},
-      </if>
-      <if test="refreshTokenExpiredSeconds != null" >
-        refresh_token_expired_seconds = #{refreshTokenExpiredSeconds,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.maxith.oauth.entity.AccessToken" >
+    <insert id="insert" parameterType="com.maxith.oauth.entity.AccessToken">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into access_token (token_id, username, client_id,
+        authentication_id, refresh_token, token_type,
+        token_expired_seconds, refresh_token_expired_seconds,
+        create_time, update_time, remark
+        )
+        values (#{tokenId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR},
+        #{authenticationId,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, #{tokenType,jdbcType=VARCHAR},
+        #{tokenExpiredSeconds,jdbcType=BIGINT}, #{refreshTokenExpiredSeconds,jdbcType=BIGINT},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.maxith.oauth.entity.AccessToken">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into access_token
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tokenId != null">
+                token_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="clientId != null">
+                client_id,
+            </if>
+            <if test="authenticationId != null">
+                authentication_id,
+            </if>
+            <if test="refreshToken != null">
+                refresh_token,
+            </if>
+            <if test="tokenType != null">
+                token_type,
+            </if>
+            <if test="tokenExpiredSeconds != null">
+                token_expired_seconds,
+            </if>
+            <if test="refreshTokenExpiredSeconds != null">
+                refresh_token_expired_seconds,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tokenId != null">
+                #{tokenId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                #{clientId,jdbcType=VARCHAR},
+            </if>
+            <if test="authenticationId != null">
+                #{authenticationId,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshToken != null">
+                #{refreshToken,jdbcType=VARCHAR},
+            </if>
+            <if test="tokenType != null">
+                #{tokenType,jdbcType=VARCHAR},
+            </if>
+            <if test="tokenExpiredSeconds != null">
+                #{tokenExpiredSeconds,jdbcType=BIGINT},
+            </if>
+            <if test="refreshTokenExpiredSeconds != null">
+                #{refreshTokenExpiredSeconds,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.maxith.oauth.entity.AccessToken">
+        update access_token
+        <set>
+            <if test="tokenId != null">
+                token_id = #{tokenId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="clientId != null">
+                client_id = #{clientId,jdbcType=VARCHAR},
+            </if>
+            <if test="authenticationId != null">
+                authentication_id = #{authenticationId,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshToken != null">
+                refresh_token = #{refreshToken,jdbcType=VARCHAR},
+            </if>
+            <if test="tokenType != null">
+                token_type = #{tokenType,jdbcType=VARCHAR},
+            </if>
+            <if test="tokenExpiredSeconds != null">
+                token_expired_seconds = #{tokenExpiredSeconds,jdbcType=BIGINT},
+            </if>
+            <if test="refreshTokenExpiredSeconds != null">
+                refresh_token_expired_seconds = #{refreshTokenExpiredSeconds,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.maxith.oauth.entity.AccessToken">
     update access_token
     set token_id = #{tokenId,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
@@ -174,29 +174,29 @@
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="findAccessToken" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM access_token
-    WHERE
-      authentication_id = #{authenticationId,jdbcType=VARCHAR}
-      and username = #{username,jdbcType=VARCHAR}
-      and client_id = #{clientId,jdbcType=VARCHAR}
-  </select>
-  <select id="findAccessTokenWithoutAuthenticationId" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM access_token
-    WHERE
-      username = #{username,jdbcType=VARCHAR}
-      and client_id = #{clientId,jdbcType=VARCHAR}
-  </select>
-  <select id="findAccessTokenByRefreshToken" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM access_token
-    WHERE
-    refresh_token = #{refreshToken,jdbcType=VARCHAR} and
-    client_id = #{clientId,jdbcType=VARCHAR}
-  </select>
+    <select id="findAccessToken" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM access_token
+        WHERE
+        authentication_id = #{authenticationId,jdbcType=VARCHAR}
+        and username = #{username,jdbcType=VARCHAR}
+        and client_id = #{clientId,jdbcType=VARCHAR}
+    </select>
+    <select id="findAccessTokenWithoutAuthenticationId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM access_token
+        WHERE
+        username = #{username,jdbcType=VARCHAR}
+        and client_id = #{clientId,jdbcType=VARCHAR}
+    </select>
+    <select id="findAccessTokenByRefreshToken" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM access_token
+        WHERE
+        refresh_token = #{refreshToken,jdbcType=VARCHAR} and
+        client_id = #{clientId,jdbcType=VARCHAR}
+    </select>
 </mapper>

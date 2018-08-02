@@ -10,11 +10,15 @@ import java.util.Set;
 
 /**
  * 认证服务service接口
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/19 16:01
+ **/
 public interface IOauthService {
 
     /**
      * 加载应用对象
+     *
      * @param clientId
      * @return
      */
@@ -22,6 +26,8 @@ public interface IOauthService {
 
     /**
      * 保存认证code
+     *
+     * @param username
      * @param authCode
      * @param clientDetails
      * @return
@@ -30,41 +36,50 @@ public interface IOauthService {
 
     /**
      * 检索认证code
+     *
+     * @param username
      * @param clientDetails
      * @return
      * @throws OAuthSystemException
      */
-    String retrieveAuthCode(String username,OauthClient clientDetails) throws OAuthSystemException;
+    String retrieveAuthCode(String username, OauthClient clientDetails) throws OAuthSystemException;
 
 
     /**
      * 查询认证token
+     *
      * @param username
      * @param clientDetails
      * @return
      */
-    String queryAccessToken(String username,OauthClient clientDetails);
+    String queryAccessToken(String username, OauthClient clientDetails);
+
     /**
      * 检索认证token
+     *
+     * @param username
      * @param clientDetails
      * @param scopes
      * @param includeRefreshToken
      * @return
      * @throws OAuthSystemException
      */
-    AccessToken retrieveAccessToken(String username,OauthClient clientDetails, Set<String> scopes, boolean includeRefreshToken) throws OAuthSystemException;
+    AccessToken retrieveAccessToken(String username, OauthClient clientDetails, Set<String> scopes, boolean includeRefreshToken) throws OAuthSystemException;
 
     /**
      * 检索并返回一个新的认证 token
+     *
+     * @param username
      * @param clientDetails
      * @param scopes
      * @return
      * @throws OAuthSystemException
      */
-    AccessToken retrieveNewAccessToken(String username,OauthClient clientDetails, Set<String> scopes) throws OAuthSystemException;
+    AccessToken retrieveNewAccessToken(String username, OauthClient clientDetails, Set<String> scopes) throws OAuthSystemException;
 
     /**
      * 加载认证code
+     *
      * @param code
      * @param clientDetails
      * @return
@@ -73,6 +88,7 @@ public interface IOauthService {
 
     /**
      * 删除认证code
+     *
      * @param code
      * @param clientDetails
      * @return
@@ -81,6 +97,7 @@ public interface IOauthService {
 
     /**
      * 使用认证code获取认证令牌
+     *
      * @param clientDetails
      * @param code
      * @return
@@ -90,6 +107,7 @@ public interface IOauthService {
 
     /**
      * 使用密码认证获取认证令牌
+     *
      * @param clientDetails
      * @param scopes
      * @param username
@@ -100,6 +118,7 @@ public interface IOauthService {
 
     /**
      * 直接使用被授权的客户端获取认证令牌
+     *
      * @param clientDetails
      * @param scopes
      * @return
@@ -109,6 +128,7 @@ public interface IOauthService {
 
     /**
      * 使用刷新令牌获取认证令牌
+     *
      * @param refreshToken
      * @param clientId
      * @return
@@ -117,6 +137,7 @@ public interface IOauthService {
 
     /**
      * 使用刷新令牌获取新的认证令牌
+     *
      * @param refreshToken
      * @param clientId
      * @return
@@ -126,6 +147,7 @@ public interface IOauthService {
 
     /**
      * 检查clienId是否存在
+     *
      * @param clientId
      * @return
      */

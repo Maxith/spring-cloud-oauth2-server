@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>login</title>
     <meta name="Generator" content="EditPlus"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
     <script src="../js/jquery-2.1.4.min.js" th:src="@{/js/jquery-2.1.4.min.js}"></script>
@@ -33,7 +33,8 @@
                         </div>
                         <div class="login-btns">
                             <div class="check-box" style="float: left;margin-top: 10px" id="remenberInfo">
-                                <label class="checkbox-item" value="true" style="margin-bottom:5px;"><span></span><p>记住密码</p></label>
+                                <label class="checkbox-item" value="true" style="margin-bottom:5px;"><span></span>
+                                    <p>记住密码</p></label>
                             </div>
                             <a class="login-btn">登陆</a>
                         </div>
@@ -48,59 +49,61 @@
     /*<![CDATA[*/
     var onBlur = true;
 
-    $("body").bind("click",function(){
+    $("body").bind("click", function () {
         $(".record").addClass("hidden");
     })
-    $(".record").click(function(e){
-        var ref = e.target||e.srcElement;
-        if(ref.nodeName.toLowerCase()=="li"){
+    $(".record").click(function (e) {
+        var ref = e.target || e.srcElement;
+        if (ref.nodeName.toLowerCase() == "li") {
             var pwd = $(ref).attr("pwd");
             var username = $(ref).text();
             $(".username input").val(username);
             $(".password input").val(pwd);
         }
     })
-    $(".record").bind("mouseover",function(){
+    $(".record").bind("mouseover", function () {
         onBlur = false;
     })
-    $(".record").bind("mouseout",function(){
+    $(".record").bind("mouseout", function () {
         onBlur = true;
     })
-    $(".username input").bind("focus",function(e){
-        if($(".record li").length>0){
+    $(".username input").bind("focus", function (e) {
+        if ($(".record li").length > 0) {
             $(".record").removeClass("hidden");
         }
     })
-    $(".username input").bind("blur",function(){
-        if(onBlur)
+    $(".username input").bind("blur", function () {
+        if (onBlur)
             $(".record").addClass("hidden");
     })
-    $(".username input").bind("click",function(e){
+    $(".username input").bind("click", function (e) {
         e.stopPropagation();
     })
-    $(document).on('click','.login-btn',login);
+    $(document).on('click', '.login-btn', login);
 
     var loginFlag = true;
+
     function login() {
-        var url =/*[[@{/login/passwordLogin}]]*/'';
-        if (loginFlag){
+        var url = /*[[@{/login/passwordLogin}]]*/'';
+        if (loginFlag) {
             loginFlag = false;
             $.ajax({
                 type: "POST",
                 url: url,
                 data: $('#loginForm').serialize(),
                 async: true,
-                success: function(result){
+                success: function (result) {
                     loginFlag = true;
-                    if (result.code == '000000'){
+                    if (result.code == '000000') {
                         window.location.reload();
-                    }else{
+                    } else {
                         $.fn.alert({content: result.msg})
                     }
                 }
             })
         }
     }
+
     /*]]>*/
 </script>
 </body>

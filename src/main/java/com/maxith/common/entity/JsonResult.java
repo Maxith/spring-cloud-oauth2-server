@@ -4,15 +4,21 @@ import java.io.Serializable;
 
 /**
  * 基础结果json对象
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 10:13
+ **/
 public class JsonResult implements Serializable {
     private static final long serialVersionUID = 3138145308653310100L;
+
+    private static final JsonResult result = new JsonResult();
+
     private static String SECCESS_CODE = "000000";
     private static String SECCESS_MSG = "操作成功";
+
     private String code;
     private String msg;
     private Object data;
-    private static final JsonResult result = new JsonResult();
 
     public static JsonResult getInstance() {
         result.setCode(SECCESS_CODE);

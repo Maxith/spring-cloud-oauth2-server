@@ -1,45 +1,49 @@
 package com.maxith.oauth.validator;
 
 
-import com.maxith.oauth.pojo.MyOAuthTokenRequest;
 import com.maxith.oauth.entity.OauthClient;
+import com.maxith.oauth.pojo.MyOAuthTokenRequest;
+import com.maxith.oauth.service.IOauthService;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 
 import java.util.Set;
 
 /**
- * 客户端证书与客户端匹配验证器
- */
+ * 信任的客户端验证器
+ *
+ * @author zhouyou
+ * @date 2018/7/19 16:21
+ **/
 public class ClientCredentialsClientDetailsValidator extends AbstractOauthTokenValidator {
 
-    public ClientCredentialsClientDetailsValidator(MyOAuthTokenRequest oauthRequest) {
-        super(oauthRequest);
+    public ClientCredentialsClientDetailsValidator(MyOAuthTokenRequest oauthRequest, IOauthService iOauthService) {
+        super(oauthRequest, iOauthService);
     }
 
-    /*
-    * /oauth/token?client_id=credentials-client&client_secret=credentials-secret&grant_type=client_credentials&scope=read write
-    * */
+    /**
+     * /oauth/token?client_id=credentials-client&client_secret=credentials-secret&grant_type=client_credentials&scope=read write
+     *
+     * @param clientDetails
+     * @return
+     * @throws OAuthSystemException
+     */
     @Override
     protected OAuthResponse validateSelf(OauthClient clientDetails) throws OAuthSystemException {
 
-        //validate grant_type
+        //验证客户端是否支持该类型
         final String grantType = grantType();
-        if (!clientDetails.getGrantTypes().contains(grantType)) {
-            logger.debug("Invalid grant_type '{}', client_id = '{}'", grantType, clientDetails.getClientId());
+        if (invalidateGrantType(clientDetails,grantType)) {
             return invalidGrantTypeResponse(grantType);
         }
 
-        //validate client_secret
-        final String clientSecret = oauthRequest.getClientSecret();
-        if (clientSecret == null || !clientSecret.equals(clientDetails.getClientSecret())) {
-            logger.debug("Invalid client_secret '{}', client_id = '{}'", clientSecret, clientDetails.getClientId());
+        //验证客户端密钥
+        if (invalidateClientSecret(clientDetails)) {
             return invalidClientSecretResponse();
         }
 
-        //validate scope
-        final Set<String> scopes = oauthRequest.getScopes();
-        if (scopes.isEmpty() || excludeScopes(scopes, clientDetails)) {
+        //验证应用范围
+        if (invalidateScope(clientDetails)) {
             return invalidScopeResponse();
         }
 

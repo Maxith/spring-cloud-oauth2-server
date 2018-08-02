@@ -1,10 +1,11 @@
 package com.maxith.config.shiro;
 
 
-import com.maxith.common.ApplicatonConstants;
+import com.maxith.config.oauth.OAuthSubjectFactory;
 import com.maxith.config.oauth.Oauth2AuthRealmConfig;
 import com.maxith.config.redis.shiro.ShiroRedisCacheManager;
 import com.maxith.config.redis.shiro.ShiroRedisSessionDAO;
+import com.maxith.oauth.properties.OAuthProperties;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -15,11 +16,9 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.env.Environment;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
@@ -27,12 +26,12 @@ import java.util.LinkedHashMap;
 
 /**
  * shiro安全配置
- * Created by zhouyou on 2017/5/11.
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 11:02
+ **/
 @Configuration
-public class ShiroConfig implements EnvironmentAware {
-
-    private Environment env;
+public class ShiroConfig {
 
     /**
      * 注册shiro的filter
@@ -63,15 +62,16 @@ public class ShiroConfig implements EnvironmentAware {
         //配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
-        filterChainDefinitionMap.put("/authorize", "anon");//可以匿名访问
-        filterChainDefinitionMap.put("/token", "anon");//可以匿名访问
-        filterChainDefinitionMap.put("/login/**", "anon");//可以匿名访问
+        //匿名访问
+        filterChainDefinitionMap.put("/authorize", "anon");
+        filterChainDefinitionMap.put("/token", "anon");
+        filterChainDefinitionMap.put("/login/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/img/**", "anon");
 
-        filterChainDefinitionMap.put("/js/**", "anon");//可以匿名访问
-        filterChainDefinitionMap.put("/css/**", "anon");//可以匿名访问
-        filterChainDefinitionMap.put("/img/**", "anon");//可以匿名访问
-
-        filterChainDefinitionMap.put("/**", "authc");//表示需要认证才可以访问
+        //认证访问
+        filterChainDefinitionMap.put("/**", "authc");
 
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
@@ -91,6 +91,9 @@ public class ShiroConfig implements EnvironmentAware {
         System.err.println("--------------shiro已经加载----------------");
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
 
+        //自定义shiro认证工厂
+        manager.setSubjectFactory(new OAuthSubjectFactory());
+
         //自定义域管理器
         manager.setRealm(authRealm);
 
@@ -103,22 +106,29 @@ public class ShiroConfig implements EnvironmentAware {
         return manager;
     }
 
+    /**
+     * 自定义shiro session管理器
+     *
+     * @param myRedisSessionDAO
+     * @return
+     */
     @Bean("myShiroSessionManagerConfig")
-    public DefaultWebSessionManager myShiroSessionManagerConfig(@Qualifier("shiroRedisSessionDAO") ShiroRedisSessionDAO myRedisSessionDAO) {
+    public DefaultWebSessionManager myShiroSessionManagerConfig(@Qualifier("shiroRedisSessionDAO") ShiroRedisSessionDAO myRedisSessionDAO,
+                                                                @Qualifier("oAuthProperties") OAuthProperties oAuthProperties) {
         DefaultWebSessionManager manager = new DefaultWebSessionManager();
 
         manager.setSessionDAO(myRedisSessionDAO);
+
         //设置cookie
         Cookie cookie = new SimpleCookie();
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setName("myjsid");
-        cookie.setMaxAge(Integer.parseInt(env.getProperty(ApplicatonConstants.REDIS_TIME_OUT)));
+        cookie.setMaxAge(oAuthProperties.getSessionOvertime().intValue());
         manager.setSessionIdCookie(cookie);
 
         //session过期时间
-        long time = Long.parseLong(env.getProperty(ApplicatonConstants.REDIS_TIME_OUT));
-        manager.setGlobalSessionTimeout(time);
+        manager.setGlobalSessionTimeout(oAuthProperties.getSessionOvertime());
         return manager;
     }
 
@@ -158,10 +168,5 @@ public class ShiroConfig implements EnvironmentAware {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         System.out.println("--------------------shiro aop注解开启----------------");
         return authorizationAttributeSourceAdvisor;
-    }
-
-    @Override
-    public void setEnvironment(Environment env) {
-        this.env = env;
     }
 }

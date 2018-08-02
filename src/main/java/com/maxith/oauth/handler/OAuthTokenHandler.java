@@ -9,11 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * token处理器接口
- */
+ *
+ * @author zhouyou
+ * @date 2018/7/18 15:15
+ **/
 public interface OAuthTokenHandler {
 
     /**
-     * 支持
+     * 是否支持当前请求
+     *
      * @param tokenRequest
      * @return
      * @throws OAuthProblemException
@@ -21,12 +25,12 @@ public interface OAuthTokenHandler {
     boolean support(MyOAuthTokenRequest tokenRequest) throws OAuthProblemException;
 
     /**
-     * 处理
+     * 请求处理
+     *
      * @param tokenRequest
      * @param response
      * @throws OAuthProblemException
      * @throws OAuthSystemException
      */
     void handle(MyOAuthTokenRequest tokenRequest, HttpServletResponse response) throws OAuthProblemException, OAuthSystemException;
-
 }

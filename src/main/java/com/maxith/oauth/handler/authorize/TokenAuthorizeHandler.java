@@ -5,6 +5,8 @@ import com.maxith.common.tools.WebUtils;
 import com.maxith.oauth.entity.AccessToken;
 import com.maxith.oauth.entity.OauthClient;
 import com.maxith.oauth.pojo.MyOAuthAuthzRequest;
+import com.maxith.oauth.properties.OAuthProperties;
+import com.maxith.oauth.service.IOauthService;
 import com.maxith.oauth.validator.AbstractClientDetailsValidator;
 import com.maxith.oauth.validator.TokenClientDetailsValidator;
 import org.apache.oltu.oauth2.as.response.OAuthASResponse;
@@ -17,32 +19,27 @@ import java.io.IOException;
 
 /**
  * 统一令牌认证处理器
- */
-public class TokenAuthorizeHandler extends AbstractAuthorizeHandler{
+ *
+ * @author zhouyou
+ * @date 2018/7/18 14:05
+ **/
+public class TokenAuthorizeHandler extends AbstractAuthorizeHandler {
 
-    public TokenAuthorizeHandler(MyOAuthAuthzRequest oauthRequest, HttpServletResponse response, String loginView, String approvalView, String approvalKeyword) {
-        super(oauthRequest, response, loginView, approvalView, approvalKeyword);
+    public TokenAuthorizeHandler(IOauthService iOauthService, MyOAuthAuthzRequest oauthRequest, HttpServletResponse response, OAuthProperties oAuthProperties) {
+        super(iOauthService, oauthRequest, response, oAuthProperties);
     }
 
     @Override
     protected AbstractClientDetailsValidator getValidator() {
-        return new TokenClientDetailsValidator(oauthRequest, false);
+        return new TokenClientDetailsValidator(oauthRequest, iOauthService, false);
     }
 
-    /*
-    *  response token
-    *
-    *  If it is the first loggerged or first approval , always return newly AccessToken
-    *  Always exclude refresh_token
-    *
-    * */
     @Override
-    protected void handleResponse() throws OAuthSystemException, IOException {
-
+    protected void handleResponse() throws OAuthSystemException {
         if (forceNewAccessToken()) {
             forceTokenResponse();
         } else {
-            AccessToken accessToken = iOauthService.retrieveAccessToken(username(),clientDetails(), oauthRequest.getScopes(), false);
+            AccessToken accessToken = iOauthService.retrieveAccessToken(username(), clientDetails(), oauthRequest.getScopes(), false);
 
             if (accessToken.tokenExpired()) {
                 expiredTokenResponse(accessToken);
@@ -52,11 +49,22 @@ public class TokenAuthorizeHandler extends AbstractAuthorizeHandler{
         }
     }
 
+    /**
+     * 新令牌响应
+     *
+     * @throws OAuthSystemException
+     */
     private void forceTokenResponse() throws OAuthSystemException {
-        AccessToken accessToken = iOauthService.retrieveNewAccessToken(username(),clientDetails(), oauthRequest.getScopes());
+        AccessToken accessToken = iOauthService.retrieveNewAccessToken(username(), clientDetails(), oauthRequest.getScopes());
         normalTokenResponse(accessToken);
     }
 
+    /**
+     * 普通响应
+     *
+     * @param accessToken
+     * @throws OAuthSystemException
+     */
     private void normalTokenResponse(AccessToken accessToken) throws OAuthSystemException {
 
         final OAuthResponse oAuthResponse = createTokenResponse(accessToken, true);
@@ -65,6 +73,12 @@ public class TokenAuthorizeHandler extends AbstractAuthorizeHandler{
         WebUtils.writeOAuthQueryResponse(response, oAuthResponse);
     }
 
+    /**
+     * 失效的响应
+     *
+     * @param accessToken
+     * @throws OAuthSystemException
+     */
     private void expiredTokenResponse(AccessToken accessToken) throws OAuthSystemException {
         final OauthClient clientDetails = clientDetails();
         logger.debug("AccessToken {} is expired", accessToken);
